@@ -241,9 +241,10 @@ async def step(request: Request, session_id: str = "default"):
     try:
         action = Action(**action_data)
     except ValidationError as e:
+        logger.warning(f"Action validation failed: {e.errors()}")
         return {
             "observation": env._build_obs().model_dump(), 
-            "reward": {"value": 0.0, "breakdown": {}, "feedback": f"Missing field: {e.errors()}"},
+            "reward": {"value": 0.0, "breakdown": {}, "feedback": "Validation Error: One or more fields are incorrect or missing."},
             "done": env.state_data["episode_done"],
             "info": {}
         }

@@ -128,8 +128,8 @@ async function sendStep() {
 
   const action = {
     action_type: type,
-    package: pkg || null,
-    reason: reason || null,
+    package: pkg || "",
+    reason: reason || "",
   };
   if (type === "propose_upgrade" && version) action.proposed_version = version;
   if (cve) action.cve_id = cve;
@@ -195,12 +195,22 @@ function renderObservation(obs) {
   } else {
     for (const [pkg, ver] of Object.entries(manifest)) {
       const isFlagged = flagged.includes(pkg);
+      const isVulnerable = obs.cve_database?.some(c => c.package === pkg);
       const tr = document.createElement("tr");
+      
+      let statusHtml = "—";
+      let correctHtml = "—";
+      
+      if (isFlagged) {
+        statusHtml = `<span class="status-flag ${isVulnerable ? "status-ok" : "status-warn"}">Flagged</span>`;
+        correctHtml = isVulnerable ? `<span class="status-ok">✔ Yes</span>` : `<span class="status-warn">✖ No</span>`;
+      }
+      
       tr.innerHTML = `
         <td class="mono">${escHtml(pkg)}</td>
         <td class="mono">${escHtml(ver)}</td>
-        <td class="status-flag ${isFlagged ? "status-ok" : "status-neutral"}">${isFlagged ? "Flagged" : "—"}</td>
-        <td>—</td>
+        <td>${statusHtml}</td>
+        <td>${correctHtml}</td>
       `;
       tbody.appendChild(tr);
     }
@@ -261,7 +271,7 @@ function resetStatsUI(obs) {
   document.getElementById("stat-steps").textContent = "0";
   document.getElementById("stat-maxsteps").textContent = maxSteps;
   document.getElementById("score-display").textContent = "0.00";
-  document.getElementById("score-label").textContent = obs?.task_name ?? "";
+  document.getElementById("score-label").textContent = obs?.task_name ? obs.task_name.split(".")[0] : "";
 
   const bar = document.getElementById("score-bar");
   bar.style.width = "0%";
@@ -274,9 +284,10 @@ function resetStatsUI(obs) {
 }
 
 function updateScoreUI(info, obs) {
+  if (!info) return;
   const steps = obs?.current_step ?? 0;
   const maxSteps = obs?.max_steps ?? 1;
-  const score = cumulativeScore;
+  const score = info.cumulative_score ?? cumulativeScore;
 
   document.getElementById("stat-score").textContent = score.toFixed(2);
   document.getElementById("stat-steps").textContent = steps;
@@ -285,13 +296,19 @@ function updateScoreUI(info, obs) {
 
   const pct = Math.min(score * 100, 100);
   const bar = document.getElementById("score-bar");
-  bar.style.width = pct + "%";
-  bar.className = `score-bar-fill ${scoreBarClass(pct)}`;
+  if (bar) {
+    bar.style.width = pct + "%";
+    bar.className = `score-bar-fill ${scoreBarClass(pct)}`;
+  }
 
-  document.getElementById("stat-correct").textContent = info.flags_correct ?? 0;
-  document.getElementById("stat-fp").textContent = info.false_positives ?? 0;
-  document.getElementById("stat-total-flagged").textContent = (obs?.flagged_packages ?? []).length;
-  document.getElementById("stat-upgrades").textContent = (obs?.proposed_upgrades ?? []).length;
+  document.getElementById("stat-correct").textContent = info.flags_correct ?? "0";
+  document.getElementById("stat-fp").textContent = info.false_positives ?? "0";
+  
+  const flaggedArr = obs?.flagged_packages || [];
+  document.getElementById("stat-total-flagged").textContent = flaggedArr.length;
+  
+  const upgradeArr = obs?.proposed_upgrades || [];
+  document.getElementById("stat-upgrades").textContent = upgradeArr.length;
 }
 
 // ── Escape HTML ──────────────────────────────────────────────────────────────
