@@ -2,7 +2,8 @@ import json, os, logging, time
 import traceback
 from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, Response
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import ValidationError
 from typing import Any
 
@@ -34,6 +35,41 @@ try:
     CVE_DB, SCENARIOS = load_data()
 except Exception as e:
     pass
+
+app = FastAPI(title="dep-vuln-triage", version="1.0.0")
+
+# ── UI & Static Files ─────────────────────────────────────────────────────────
+
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "..", "static")
+
+@app.get("/", response_class=HTMLResponse, include_in_schema=False)
+async def ui_root():
+    index_path = os.path.join(STATIC_DIR, "index.html")
+    try:
+        with open(index_path, "r", encoding="utf-8") as f:
+            return f.read()
+    except Exception as e:
+        return f"<html><body><h1>UI Error</h1><p>{str(e)}</p></body></html>"
+
+# Mount static files (CSS/JS)
+try:
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+except Exception as e:
+    logger.error(f"Failed to mount static files: {e}")
+
+@app.exception_handler(404)
+async def custom_404_handler(request: Request, exc: HTTPException):
+    # If not an API call, serve the UI (SPA behavior)
+    path = request.url.path
+    api_prefixes = ["/reset", "/step", "/state", "/health", "/metadata", "/schema", "/mcp", "/openapi.json", "/docs"]
+    if not any(path.startswith(p) for p in api_prefixes):
+        index_path = os.path.join(STATIC_DIR, "index.html")
+        try:
+            with open(index_path, "r", encoding="utf-8") as f:
+                return HTMLResponse(content=f.read(), status_code=200)
+        except:
+            pass
+    return JSONResponse(status_code=404, content={"detail": "Not Found"})
 
 class DepVulnTriageEnv:
     def __init__(self, task_name: str):
