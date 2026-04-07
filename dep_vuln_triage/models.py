@@ -23,6 +23,8 @@ class Observation(BaseModel):
     max_steps: int
     episode_done: bool
     last_action_result: str | None = None
+    flagged_packages: list[str] = []
+    proposed_upgrades: list[str] = []
 
 class Action(BaseModel):
     model_config = ConfigDict(extra='ignore')

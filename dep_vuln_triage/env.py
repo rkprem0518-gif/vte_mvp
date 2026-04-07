@@ -160,7 +160,9 @@ class DepVulnTriageEnv:
             "current_step": self.state_data["current_step"],
             "max_steps": self.state_data["max_steps"],
             "episode_done": self.state_data["episode_done"],
-            "last_action_result": self.last_action_result
+            "last_action_result": self.last_action_result,
+            "flagged_packages": self.state_data["flagged_packages"],
+            "proposed_upgrades": self.state_data["proposed_upgrades"]
         }
         return Observation(**obs_dict)
 
