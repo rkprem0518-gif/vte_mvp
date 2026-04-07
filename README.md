@@ -14,17 +14,17 @@ tags:
 
 This environment directly mirrors the functionality of industry-standard tools like **Dependabot**, **Snyk**, and **npm audit**, providing a rigorous benchmark for reasoning about semantic versioning and transitive risk.
 
-## 📊 Baseline Performance (llama3-70b-8192)
+## Baseline Performance (llama3-70b-8192)
 
 These scores represent the zero-shot performance of the Llama 3 70B model against the environment's three levels of difficulty.
 
 | Task | Difficulty | Metric | llama3-70b-8192 (Baseline) | Steps |
 |:---|:---|:---|:---|:---|
-| **single_flag** | Easy | Normalized Reward | **1.00** | 2 |
-| **transitive_trace** | Medium | Normalized Reward | **1.00** | 4 |
-| **minimal_upgrade** | Hard | Normalized Reward | **0.85** | 7 |
+| single_flag | Easy | Normalized Reward | **1.00** | 2 |
+| transitive_trace | Medium | Normalized Reward | **1.00** | 4 |
+| minimal_upgrade | Hard | Normalized Reward | **0.85** | 7 |
 
-## 🧩 Environment Specification
+## Environment Specification
 
 ### Observation Space
 The environment provides a structured context for each step:
@@ -41,18 +41,18 @@ Agents interact via five primary atomic actions:
 - `mark_safe(package, reason)`: Dismisses false-positive alerts.
 - `submit`: Finalizes the triage report and ends the session.
 
-## 🛠️ Task Suite
+## Task Suite
 
-### Task 1: Direct Risk Identification (`single_flag`)
+### Task 1: Direct Risk Identification (single_flag)
 Automated identification of a single vulnerable package present in the direct manifest. Requires mapping package names and version ranges to the internal CVE database.
 
-### Task 2: Transitive Risk Traversal (`transitive_trace`)
+### Task 2: Transitive Risk Traversal (transitive_trace)
 Root packages are secure, but their children contain vulnerabilities. Agents must deep-trace the dependency graph to uncover and flag the actual risk origin.
 
-### Task 3: Complex Remediation Planning (`minimal_upgrade`)
+### Task 3: Complex Remediation Planning (minimal_upgrade)
 Multi-vulnerability scenario where agents must suggest the **minimal** safe version that fixes the vulnerability while adhering to semantic versioning constraints and avoiding breaking changes.
 
-## 🚀 Deployment and Local Setup
+## Deployment and Local Setup
 
 ```bash
 # Standard OpenEnv Validation
@@ -68,7 +68,7 @@ export MODEL_NAME="llama3-70b-8192"
 python inference.py
 ```
 
-## ⚖️ License and Credits
+## License and Credits
 **MIT License**
 **Author:** Prem Tawar
 **Tags:** OpenEnv, DevSecOps, RL-Agent, Vulnerability-Triage

@@ -2,6 +2,7 @@ import json, os, logging, time
 import traceback
 from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from pydantic import ValidationError
 from typing import Any
 
@@ -129,6 +130,16 @@ class DepVulnTriageEnv:
 
 app = FastAPI(title="dep-vuln-triage", version="1.0.0")
 
+@app.get("/", response_class=HTMLResponse)
+async def dashboard():
+    base_dir = os.path.dirname(__file__)
+    html_path = os.path.join(base_dir, "data", "index.html")
+    try:
+        with open(html_path, "r", encoding="utf-8") as f:
+            return f.read()
+    except Exception as e:
+        return f"<html><body><h1>Dashboard Missing</h1><pre>{str(e)}</pre></body></html>"
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -247,7 +258,34 @@ async def delete_session(session_id: str):
 async def health():
     if not CVE_DB or not SCENARIOS:
         raise HTTPException(500, "Data files missing or invalid.")
-    return {"status": "ok", "version": "1.0.0"}
+    return {"status": "healthy", "version": "1.0.0"}
+
+@app.get("/metadata")
+async def get_metadata():
+    return {
+        "name": "dep-vuln-triage",
+        "description": "Real-world dependency vulnerability triage environment for DevSecOps agents."
+    }
+
+@app.get("/schema")
+async def get_schema():
+    return {
+        "action": Action.model_json_schema(),
+        "observation": Observation.model_json_schema(),
+        "state": Observation.model_json_schema()
+    }
+
+@app.post("/mcp")
+async def mcp_endpoint(request: Request):
+    try:
+        body = await request.json()
+    except:
+        body = {}
+    return {
+        "jsonrpc": "2.0",
+        "id": body.get("id", 1),
+        "result": "MCP endpoint active"
+    }
 
 @app.get("/tasks")
 async def tasks():
