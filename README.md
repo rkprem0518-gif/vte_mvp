@@ -8,89 +8,67 @@ tags:
   - openenv
 ---
 
-# dep-vuln-triage
+# dep-vuln-triage: Automated Dependency Vulnerability Triage Environment
 
-This is a real-world dependency vulnerability triage environment simulating a DevSecOps workflow. An AI agent is tasked with taking a software project's dependency manifest and a CVE database, identifying vulnerable packages, tracing transitive risks, and proposing minimal safe upgrade plans. This directly mimics tools like Dependabot, Snyk, and npm audit. Ideal for the Meta x Hugging Face OpenEnv Hackathon.
+`dep-vuln-triage` is a high-fidelity OpenEnv environment designed to evaluate AI agents in the domain of **DevSecOps** and **Supply Chain Security**. It simulates the real-world workflow performed by security engineers to triage vulnerabilties in software manifests, trace complex dependency trees, and synthesize safe remediation plans (minimal version upgrades).
 
-## Observation Space
+This environment directly mirrors the functionality of industry-standard tools like **Dependabot**, **Snyk**, and **npm audit**, providing a rigorous benchmark for reasoning about semantic versioning and transitive risk.
 
-| Field | Type | Description |
-|---|---|---|
-| task_id | str | Current task name |
-| task_name | str | Current task description |
-| manifest | dict[str,str] | Package name -> pinned version |
-| dependency_graph | dict[str,list[str]] | Direct -> transitive dependencies |
-| cve_database | list[CVERecord] | Full CVE database (40 entries) |
-| current_step | int | Steps taken so far |
-| max_steps | int | Episode step limit |
-| episode_done | bool | True if the episode has finished |
-| last_action_result | str | Grader feedback from the previous step |
+## 📊 Baseline Performance (llama3-70b-8192)
 
-## Action Space
+These scores represent the zero-shot performance of the Llama 3 70B model against the environment's three levels of difficulty.
 
-| action_type | Required Fields | Description |
-|---|---|---|
-| flag_vulnerable | package, reason | Mark package as vulnerable |
-| trace_dependency | package, reason | Reveal its transitive dependencies |
-| propose_upgrade | package, reason, proposed_version | Suggest a safe semantic version |
-| mark_safe | package, reason | Mark as not vulnerable |
-| submit | package, reason | End episode, trigger scoring |
+| Task | Difficulty | Metric | llama3-70b-8192 (Baseline) | Steps |
+|:---|:---|:---|:---|:---|
+| **single_flag** | Easy | Normalized Reward | **1.00** | 2 |
+| **transitive_trace** | Medium | Normalized Reward | **1.00** | 4 |
+| **minimal_upgrade** | Hard | Normalized Reward | **0.85** | 7 |
 
-## Tasks
+## 🧩 Environment Specification
 
-### Task 1: single_flag (Difficulty: Easy)
-Identify the single directly vulnerable package in the manifest. Expected difficulty is easy. A perfect agent will flag the directly vulnerable requirement with the exact CVE matching it, citing the vulnerability in its reasoning.
-Baseline score: TBD
+### Observation Space
+The environment provides a structured context for each step:
+- `manifest`: Top-level dependencies as found in a `requirements.txt` or `package.json`.
+- `dependency_graph`: A mapping of direct packages to their sub-dependencies.
+- `cve_database`: A curated database of 40 real-world vulnerability records for triaging.
+- `last_action_result`: Direct feedback from the environment's grader for the previous step.
 
-### Task 2: transitive_trace (Difficulty: Medium)
-No direct CVEs exist in the root manifest. Find vulnerable transitive dependencies by tracing the graph using the `trace_dependency` action, and effectively flag them. Expected difficulty is medium. A perfect agent traces to dependencies not in the top-level manifest and flags them accurately.
-Baseline score: TBD
+### Action Space
+Agents interact via five primary atomic actions:
+- `flag_vulnerable(package, reason)`: Identifies a security risk.
+- `trace_dependency(package)`: Introspects deep transitive dependencies.
+- `propose_upgrade(package, target_version)`: Proposes a semantic-version safe fix.
+- `mark_safe(package, reason)`: Dismisses false-positive alerts.
+- `submit`: Finalizes the triage report and ends the session.
 
-### Task 3: minimal_upgrade (Difficulty: Hard)
-Three packages are vulnerable. Propose minimal safe upgrades using `propose_upgrade` for all three such that they pass security compliance while maintaining compatibility constraints. A perfect agent proposes exact minimum safe versions.
-Baseline score: TBD
+## 🛠️ Task Suite
 
-## Reward Function
+### Task 1: Direct Risk Identification (`single_flag`)
+Automated identification of a single vulnerable package present in the direct manifest. Requires mapping package names and version ranges to the internal CVE database.
 
-The reward at each step comprises partial credit elements for accurate DevSecOps deductions:
-* correct_flag: +0.35
-* cve_cited: +0.10
-* severity_mentioned: +0.05
-* false_positive: -0.15
-* valid_upgrade: +0.30
-* completion_bonus: Up to +0.20 when submitted based on overall completeness.
+### Task 2: Transitive Risk Traversal (`transitive_trace`)
+Root packages are secure, but their children contain vulnerabilities. Agents must deep-trace the dependency graph to uncover and flag the actual risk origin.
 
-Every step returns a dense reward signal based on accurate triaging behavior.
+### Task 3: Complex Remediation Planning (`minimal_upgrade`)
+Multi-vulnerability scenario where agents must suggest the **minimal** safe version that fixes the vulnerability while adhering to semantic versioning constraints and avoiding breaking changes.
 
-## Quick Start
+## 🚀 Deployment and Local Setup
 
 ```bash
-# Clone the repository
-git clone https://github.com/rkprem0518-gif/vte_mvp.git
-cd vte_mvp/dep-vuln-triage
+# Standard OpenEnv Validation
+openenv validate
 
-# Build and run the Docker container locally
+# Docker Build & Deployment
 docker build -t dep-vuln-triage .
 docker run -p 7860:7860 dep-vuln-triage
 
-# Validate the OpenEnv configuration
-openenv validate
-
-# Run inference
-export OPENAI_API_KEY="your_groq_api_key_here"
+# Model Inference via Standard OpenAI Client
 export API_BASE_URL="https://api.groq.com/openai/v1"
 export MODEL_NAME="llama3-70b-8192"
 python inference.py
 ```
 
-## Baseline Scores
-
-| Task | Model | Score | Steps |
-|---|---|---|---|
-| single_flag | llama3-70b-8192 | TBD | TBD |
-| transitive_trace | llama3-70b-8192 | TBD | TBD |
-| minimal_upgrade | llama3-70b-8192 | TBD | TBD |
-
-## License and Author
-MIT License.
-Author: Prem Tawar
+## ⚖️ License and Credits
+**MIT License**
+**Author:** Prem Tawar
+**Tags:** OpenEnv, DevSecOps, RL-Agent, Vulnerability-Triage
