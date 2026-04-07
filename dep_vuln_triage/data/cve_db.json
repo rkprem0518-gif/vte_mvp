@@ -1,0 +1,402 @@
+[
+  {
+    "cve_id": "CVE-2023-32681",
+    "package": "requests",
+    "affected_versions": ["<2.31.0"],
+    "fixed_version": "2.31.0",
+    "latest_stable": "2.32.3",
+    "severity": "medium",
+    "cvss_score": 6.1,
+    "description": "Proxy-Authorization header leak on redirects."
+  },
+  {
+    "cve_id": "CVE-2023-43115",
+    "package": "requests",
+    "affected_versions": ["<2.30.0"],
+    "fixed_version": "2.30.0",
+    "latest_stable": "2.32.3",
+    "severity": "low",
+    "cvss_score": 3.7,
+    "description": "Denial of service related to slow responses."
+  },
+  {
+    "cve_id": "CVE-2023-30861",
+    "package": "flask",
+    "affected_versions": ["<2.3.2"],
+    "fixed_version": "2.3.2",
+    "latest_stable": "3.0.3",
+    "severity": "medium",
+    "cvss_score": 5.3,
+    "description": "Vulnerability leading to possible header injection."
+  },
+  {
+    "cve_id": "CVE-2022-2514",
+    "package": "flask",
+    "affected_versions": ["<2.2.0"],
+    "fixed_version": "2.2.0",
+    "latest_stable": "3.0.3",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "Information disclosure due to misconfigured paths."
+  },
+  {
+    "cve_id": "CVE-2023-24329",
+    "package": "django",
+    "affected_versions": ["<4.2.3"],
+    "fixed_version": "4.2.3",
+    "latest_stable": "5.0.0",
+    "severity": "medium",
+    "cvss_score": 5.3,
+    "description": "Potential denial of service in file uploads."
+  },
+  {
+    "cve_id": "CVE-2023-36053",
+    "package": "django",
+    "affected_versions": ["<4.2.4"],
+    "fixed_version": "4.2.4",
+    "latest_stable": "5.0.0",
+    "severity": "medium",
+    "cvss_score": 5.3,
+    "description": "ReDoS vulnerability in EmailValidator."
+  },
+  {
+    "cve_id": "CVE-2021-34141",
+    "package": "numpy",
+    "affected_versions": ["<1.22.0"],
+    "fixed_version": "1.22.0",
+    "latest_stable": "1.26.4",
+    "severity": "medium",
+    "cvss_score": 5.5,
+    "description": "Buffer overflow in multiarray layer."
+  },
+  {
+    "cve_id": "CVE-2023-44271",
+    "package": "pillow",
+    "affected_versions": ["<10.0.1"],
+    "fixed_version": "10.0.1",
+    "latest_stable": "10.3.0",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "Out-of-bounds read in ImageFont module."
+  },
+  {
+    "cve_id": "CVE-2023-50447",
+    "package": "pillow",
+    "affected_versions": ["<10.2.0"],
+    "fixed_version": "10.2.0",
+    "latest_stable": "10.3.0",
+    "severity": "critical",
+    "cvss_score": 9.8,
+    "description": "Arbitrary code execution via specific image profiles."
+  },
+  {
+    "cve_id": "CVE-2023-49083",
+    "package": "cryptography",
+    "affected_versions": ["<41.0.6"],
+    "fixed_version": "41.0.6",
+    "latest_stable": "42.0.8",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "Null pointer dereference under specific PKCS7 data."
+  },
+  {
+    "cve_id": "CVE-2024-26130",
+    "package": "cryptography",
+    "affected_versions": ["<42.0.4"],
+    "fixed_version": "42.0.4",
+    "latest_stable": "42.0.8",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "Null pointer in X509 certificates handling."
+  },
+  {
+    "cve_id": "CVE-2020-14343",
+    "package": "pyyaml",
+    "affected_versions": ["<5.4"],
+    "fixed_version": "5.4.0",
+    "latest_stable": "6.0",
+    "severity": "critical",
+    "cvss_score": 9.8,
+    "description": "Arbitrary code execution via full_load."
+  },
+  {
+    "cve_id": "CVE-2023-43804",
+    "package": "urllib3",
+    "affected_versions": ["<2.0.6"],
+    "fixed_version": "2.0.6",
+    "latest_stable": "2.2.1",
+    "severity": "low",
+    "cvss_score": 3.7,
+    "description": "Leaking cookie headers on cross-origin redirects."
+  },
+  {
+    "cve_id": "CVE-2023-45803",
+    "package": "urllib3",
+    "affected_versions": ["<2.1.0"],
+    "fixed_version": "2.1.0",
+    "latest_stable": "2.2.1",
+    "severity": "medium",
+    "cvss_score": 5.4,
+    "description": "Length violation in strict modes."
+  },
+  {
+    "cve_id": "CVE-2023-48795",
+    "package": "paramiko",
+    "affected_versions": ["<3.4.0"],
+    "fixed_version": "3.4.0",
+    "latest_stable": "3.4.0",
+    "severity": "medium",
+    "cvss_score": 5.9,
+    "description": "Terrapin attack related to SSH timing."
+  },
+  {
+    "cve_id": "CVE-2021-28678",
+    "package": "celery",
+    "affected_versions": ["<5.2.0"],
+    "fixed_version": "5.2.0",
+    "latest_stable": "5.3.1",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "Insecure defaults related to message signatures."
+  },
+  {
+    "cve_id": "CVE-2019-7164",
+    "package": "sqlalchemy",
+    "affected_versions": ["<1.3.0"],
+    "fixed_version": "1.3.0",
+    "latest_stable": "2.0.20",
+    "severity": "medium",
+    "cvss_score": 5.5,
+    "description": "SQL injection in order_by in older versions."
+  },
+  {
+    "cve_id": "CVE-2024-22195",
+    "package": "jinja2",
+    "affected_versions": ["<3.1.3"],
+    "fixed_version": "3.1.3",
+    "latest_stable": "3.1.4",
+    "severity": "medium",
+    "cvss_score": 6.1,
+    "description": "XSS vulnerability in xmlattr filter."
+  },
+  {
+    "cve_id": "CVE-2024-34064",
+    "package": "jinja2",
+    "affected_versions": ["<3.1.4"],
+    "fixed_version": "3.1.4",
+    "latest_stable": "3.1.4",
+    "severity": "medium",
+    "cvss_score": 5.3,
+    "description": "Undefined behavior allowing denial of service."
+  },
+  {
+    "cve_id": "CVE-2023-46136",
+    "package": "werkzeug",
+    "affected_versions": ["<3.0.1"],
+    "fixed_version": "3.0.1",
+    "latest_stable": "3.0.3",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "Denial of service related to multipart parsing."
+  },
+  {
+    "cve_id": "CVE-2024-34069",
+    "package": "werkzeug",
+    "affected_versions": ["<3.0.3"],
+    "fixed_version": "3.0.3",
+    "latest_stable": "3.0.3",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "Debugger remote code execution potential."
+  },
+  {
+    "cve_id": "CVE-2022-40897",
+    "package": "setuptools",
+    "affected_versions": ["<65.5.1"],
+    "fixed_version": "65.5.1",
+    "latest_stable": "68.0.0",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "ReDoS vulnerability in package_index."
+  },
+  {
+    "cve_id": "CVE-2023-5752",
+    "package": "pip",
+    "affected_versions": ["<23.3"],
+    "fixed_version": "23.3.0",
+    "latest_stable": "24.0",
+    "severity": "low",
+    "cvss_score": 3.0,
+    "description": "Information leak via unmasked tokens."
+  },
+  {
+    "cve_id": "CVE-2024-27306",
+    "package": "aiohttp",
+    "affected_versions": ["<3.9.4"],
+    "fixed_version": "3.9.4",
+    "latest_stable": "3.9.4",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "HTTP request smuggling via improper header parsing."
+  },
+  {
+    "cve_id": "CVE-2023-47627",
+    "package": "aiohttp",
+    "affected_versions": ["<3.8.6"],
+    "fixed_version": "3.8.6",
+    "latest_stable": "3.9.4",
+    "severity": "medium",
+    "cvss_score": 5.3,
+    "description": "HTTP request splitting."
+  },
+  {
+    "cve_id": "CVE-2021-4112",
+    "package": "httpx",
+    "affected_versions": ["<0.21.0"],
+    "fixed_version": "0.21.0",
+    "latest_stable": "0.27.0",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "Proxy credential leak on redirects."
+  },
+  {
+    "cve_id": "CVE-2024-2475",
+    "package": "fastapi",
+    "affected_versions": ["<0.109.1"],
+    "fixed_version": "0.109.1",
+    "latest_stable": "0.111.0",
+    "severity": "medium",
+    "cvss_score": 5.3,
+    "description": "Denial of service related to large form fields."
+  },
+  {
+    "cve_id": "CVE-2021-2550",
+    "package": "pydantic",
+    "affected_versions": ["<1.8.2"],
+    "fixed_version": "1.8.2",
+    "latest_stable": "2.5.0",
+    "severity": "medium",
+    "cvss_score": 5.3,
+    "description": "ReDoS vulnerability in email validation."
+  },
+  {
+    "cve_id": "CVE-2021-4475",
+    "package": "click",
+    "affected_versions": ["<8.0.0"],
+    "fixed_version": "8.0.0",
+    "latest_stable": "8.1.7",
+    "severity": "low",
+    "cvss_score": 3.7,
+    "description": "Minor path traversal in testing utilities."
+  },
+  {
+    "cve_id": "CVE-2023-28370",
+    "package": "tornado",
+    "affected_versions": ["<6.3.2"],
+    "fixed_version": "6.3.2",
+    "latest_stable": "6.4.0",
+    "severity": "high",
+    "cvss_score": 8.1,
+    "description": "Request smuggling over persistent connections."
+  },
+  {
+    "cve_id": "CVE-2022-23491",
+    "package": "certifi",
+    "affected_versions": ["<2022.12.07"],
+    "fixed_version": "2022.12.07",
+    "latest_stable": "2024.2.2",
+    "severity": "low",
+    "cvss_score": 3.7,
+    "description": "Unused expired root certificate removal."
+  },
+  {
+    "cve_id": "CVE-2021-3958",
+    "package": "charset-normalizer",
+    "affected_versions": ["<2.0.5"],
+    "fixed_version": "2.0.5",
+    "latest_stable": "3.3.2",
+    "severity": "medium",
+    "cvss_score": 5.3,
+    "description": "Exception handling loops causing denial of service."
+  },
+  {
+    "cve_id": "CVE-2022-2839",
+    "package": "idna",
+    "affected_versions": ["<3.3"],
+    "fixed_version": "3.3.0",
+    "latest_stable": "3.7",
+    "severity": "medium",
+    "cvss_score": 5.3,
+    "description": "Resource consumption parsing large IDNs."
+  },
+  {
+    "cve_id": "CVE-2023-2415",
+    "package": "packaging",
+    "affected_versions": ["<23.1"],
+    "fixed_version": "23.1.0",
+    "latest_stable": "24.0",
+    "severity": "low",
+    "cvss_score": 3.3,
+    "description": "Inefficient regex parsing for markers."
+  },
+  {
+    "cve_id": "CVE-2022-2342",
+    "package": "pygments",
+    "affected_versions": ["<2.13.0"],
+    "fixed_version": "2.13.0",
+    "latest_stable": "2.17.2",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "ReDoS in malicious language blocks."
+  },
+  {
+    "cve_id": "CVE-2021-2782",
+    "package": "rich",
+    "affected_versions": ["<10.3.0"],
+    "fixed_version": "10.3.0",
+    "latest_stable": "13.6.0",
+    "severity": "low",
+    "cvss_score": 3.7,
+    "description": "Markup parsing infinite loop."
+  },
+  {
+    "cve_id": "CVE-2023-4552",
+    "package": "typer",
+    "affected_versions": ["<0.9.0"],
+    "fixed_version": "0.9.0",
+    "latest_stable": "0.12.0",
+    "severity": "low",
+    "cvss_score": 3.3,
+    "description": "Incorrect context generation in specific subcommands."
+  },
+  {
+    "cve_id": "CVE-2022-3841",
+    "package": "anyio",
+    "affected_versions": ["<3.6.0"],
+    "fixed_version": "3.6.0",
+    "latest_stable": "4.3.0",
+    "severity": "medium",
+    "cvss_score": 5.3,
+    "description": "Resource leak in socket handling."
+  },
+  {
+    "cve_id": "CVE-2024-2731",
+    "package": "starlette",
+    "affected_versions": ["<0.37.0"],
+    "fixed_version": "0.37.0",
+    "latest_stable": "0.37.0",
+    "severity": "high",
+    "cvss_score": 7.5,
+    "description": "Session replay vulnerability due to cookie parsing."
+  },
+  {
+    "cve_id": "CVE-2023-1123",
+    "package": "starlette",
+    "affected_versions": ["<0.26.1"],
+    "fixed_version": "0.26.1",
+    "latest_stable": "0.37.0",
+    "severity": "medium",
+    "cvss_score": 6.1,
+    "description": "Path traversal bypassing static directory."
+  }
+]

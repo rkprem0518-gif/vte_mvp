@@ -1,0 +1,39 @@
+name: dep-vuln-triage
+version: "1.0.0"
+description: >
+  Real-world dependency vulnerability triage environment. An AI agent acts as
+  a DevSecOps engineer: given a software manifest and a CVE database, the agent
+  must identify vulnerable packages, trace transitive risks, and propose minimal
+  safe upgrade paths. Directly mirrors real tools like Dependabot, Snyk, and
+  pip-audit.
+author: "AI Assistant"
+license: MIT
+tags:
+  - security
+  - devsecops
+  - vulnerability-triage
+  - real-world
+  - supply-chain
+  - openenv
+
+tasks:
+  - name: single_flag
+    difficulty: easy
+    description: "Identify the single directly vulnerable package in the manifest."
+    max_steps: 5
+
+  - name: transitive_trace
+    difficulty: medium
+    description: "No direct CVEs — find vulnerable transitive dependencies by tracing the graph."
+    max_steps: 10
+
+  - name: minimal_upgrade
+    difficulty: hard
+    description: "Three vulnerable packages. Propose minimal safe versions for all three."
+    max_steps: 15
+
+endpoints:
+  reset: POST /reset
+  step:  POST /step
+  state: GET  /state
+  health: GET /health

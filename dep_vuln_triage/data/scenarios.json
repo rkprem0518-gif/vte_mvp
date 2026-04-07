@@ -1,0 +1,73 @@
+{
+  "single_flag": {
+    "task_id": "single_flag",
+    "description": "One package in the manifest is directly vulnerable. Flag it.",
+    "manifest": {
+      "requests": "2.28.1",
+      "flask": "3.0.3",
+      "numpy": "1.26.4",
+      "pillow": "10.3.0",
+      "click": "8.1.7"
+    },
+    "dependency_graph": {},
+    "vulnerable_packages": ["requests"],
+    "safe_packages": ["flask", "numpy", "pillow", "click"],
+    "traceable_packages": [],
+    "required_upgrades": {
+      "requests": {"min_safe": "2.31.0", "max_allowed": "2.32.3"}
+    },
+    "max_steps": 5
+  },
+  "transitive_trace": {
+    "task_id": "transitive_trace",
+    "description": "No direct CVEs — find vulnerable transitive dependencies by tracing the graph.",
+    "manifest": {
+      "flask": "2.3.2",
+      "celery": "5.3.1",
+      "httpx": "0.25.0",
+      "pydantic": "2.5.0",
+      "rich": "13.6.0"
+    },
+    "dependency_graph": {
+      "flask": ["werkzeug", "jinja2", "click", "itsdangerous"],
+      "celery": ["kombu", "billiard", "vine"],
+      "httpx": ["httpcore", "certifi", "h11"],
+      "pydantic": ["pydantic-core", "annotated-types"],
+      "rich": ["markdown-it-py", "pygments"]
+    },
+    "vulnerable_packages": ["werkzeug", "jinja2"],
+    "safe_packages": ["flask", "celery", "httpx", "pydantic", "rich", "click", "certifi", "pygments"],
+    "traceable_packages": ["flask", "httpx"],
+    "required_upgrades": {
+      "werkzeug": {"min_safe": "2.2.3", "max_allowed": "3.0.3"},
+      "jinja2": {"min_safe": "3.1.4", "max_allowed": "3.1.4"}
+    },
+    "max_steps": 10
+  },
+  "minimal_upgrade": {
+    "task_id": "minimal_upgrade",
+    "description": "Three packages are vulnerable. Propose minimal safe upgrades for all.",
+    "manifest": {
+      "requests": "2.28.1",
+      "pillow": "9.5.0",
+      "cryptography": "41.0.3",
+      "sqlalchemy": "2.0.20",
+      "paramiko": "3.2.0",
+      "django": "4.2.3",
+      "aiohttp": "3.8.5",
+      "pyyaml": "6.0",
+      "setuptools": "68.0.0",
+      "fastapi": "0.103.0"
+    },
+    "dependency_graph": {},
+    "vulnerable_packages": ["requests", "pillow", "cryptography"],
+    "safe_packages": ["sqlalchemy", "paramiko", "django", "aiohttp", "pyyaml", "setuptools", "fastapi"],
+    "traceable_packages": [],
+    "required_upgrades": {
+      "requests": {"min_safe": "2.31.0", "max_allowed": "2.32.3"},
+      "pillow": {"min_safe": "10.0.1", "max_allowed": "10.3.0"},
+      "cryptography": {"min_safe": "41.0.7", "max_allowed": "42.0.8"}
+    },
+    "max_steps": 15
+  }
+}
