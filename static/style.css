@@ -378,6 +378,93 @@ details .docs-body { padding: 0 16px 16px; background: var(--surface); }
 .docs-table td { padding: 6px 10px; border: 1px solid var(--border); color: var(--text); vertical-align: top; }
 .docs-table td:first-child { font-family: var(--mono); font-size: 11px; white-space: nowrap; }
 
+/* ---------- Judge Guide ---------- */
+.judge-guide {
+  background: var(--accent-light) !important;
+  border-top: 1px solid #bfdbfe;
+  border-bottom: 1px solid #bfdbfe !important;
+}
+
+.guide-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.guide-steps .step {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  display: flex;
+  gap: 8px;
+}
+
+.guide-steps .step span {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* ---------- Dep tree tree-lines ---------- */
+.dep-tree {
+  position: relative;
+  border-left: 1px solid var(--border);
+  padding-left: 12px;
+  margin-left: 4px;
+}
+
+.dep-tree .pkg {
+  font-weight: 600;
+  color: var(--text);
+  position: relative;
+  margin-top: 12px;
+}
+
+.dep-tree .pkg:first-child { margin-top: 0; }
+
+.dep-tree .pkg::before {
+  content: "";
+  position: absolute;
+  left: -13px;
+  top: 9px;
+  width: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dep-tree .child {
+  padding-left: 20px;
+  color: var(--text-secondary);
+  position: relative;
+}
+
+.dep-tree .child::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 9px;
+  width: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.graph-highlight {
+  animation: highlight-pulse 2s ease;
+}
+
+@keyframes highlight-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+}
+
 /* ---------- Misc ---------- */
 .hidden { display: none !important; }
 .text-muted { color: var(--text-muted); }

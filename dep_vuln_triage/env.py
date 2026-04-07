@@ -155,7 +155,7 @@ class DepVulnTriageEnv:
             "task_id": self.scenario["task_id"],
             "task_name": self.scenario["description"],
             "manifest": self.scenario["manifest"],
-            "dependency_graph": self.scenario["dependency_graph"],
+            "dependency_graph": self.state_data["revealed_deps"],
             "cve_database": CVE_DB,
             "current_step": self.state_data["current_step"],
             "max_steps": self.state_data["max_steps"],

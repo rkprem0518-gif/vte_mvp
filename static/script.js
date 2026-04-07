@@ -161,6 +161,14 @@ async function sendStep() {
     updateFeedback(rewardVal, feedbackText);
     updateScoreUI(info, obs);
 
+    // Visual highlight for graph updates
+    if (type === "trace_dependency" && rewardVal > 0) {
+      const card = document.getElementById("dep-tree-card");
+      card.classList.remove("graph-highlight");
+      void card.offsetWidth; // Trigger reflow
+      card.classList.add("graph-highlight");
+    }
+
     if (done) {
       document.getElementById("episode-done-banner").classList.add("visible");
       document.getElementById("btn-step").disabled = true;
