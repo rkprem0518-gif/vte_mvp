@@ -414,6 +414,28 @@ details .docs-body { padding: 0 16px 16px; background: var(--surface); }
   border-radius: 50%;
 }
 
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.guide-table th {
+  text-align: left;
+  padding: 4px 8px;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--accent);
+  border-bottom: 1px solid #bfdbfe;
+}
+
+.guide-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid #bfdbfe;
+  color: var(--text-secondary);
+}
+
+.guide-table tr:last-child td { border-bottom: none; }
+
 /* ---------- Dep tree tree-lines ---------- */
 .dep-tree {
   position: relative;

@@ -86,7 +86,8 @@ class DepVulnTriageEnv:
             "proposed_upgrades": [],
             "cumulative_score": 0.0,
             "episode_done": False,
-            "already_flagged": []
+            "already_flagged": [],
+            "revealed_deps": {}
         }
         self.last_action_result = None
 
@@ -98,6 +99,7 @@ class DepVulnTriageEnv:
         self.state_data["proposed_upgrades"] = []
         self.state_data["cumulative_score"] = 0.0
         self.state_data["already_flagged"] = []
+        self.state_data["revealed_deps"] = {}
         self.last_action_result = None
         return self._build_obs()
 
@@ -123,6 +125,8 @@ class DepVulnTriageEnv:
             self.state_data["flagged_packages"].append(action.package)
         elif action.action_type == "trace_dependency" and action.package not in self.state_data["traced_packages"]:
             self.state_data["traced_packages"].append(action.package)
+            if action.package in self.scenario.get("dependency_graph", {}):
+                self.state_data["revealed_deps"][action.package] = self.scenario["dependency_graph"][action.package]
         elif action.action_type == "propose_upgrade" and action.package not in self.state_data["proposed_upgrades"]:
             self.state_data["proposed_upgrades"].append(action.package)
 
@@ -189,7 +193,7 @@ async def log_requests(request: Request, call_next):
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     logger.error(f"Global Error: {exc}\n{traceback.format_exc()}")
-    return {"detail": str(exc)}, 500
+    return JSONResponse(status_code=500, content={"detail": str(exc)})
 
 def cleanup_sessions():
     now = time.time()
