@@ -164,9 +164,6 @@ class DepVulnTriageEnv:
         }
         return Observation(**obs_dict)
 
-app = FastAPI(title="dep-vuln-triage", version="1.0.0")
-
-
 
 app.add_middleware(
     CORSMiddleware,
