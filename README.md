@@ -43,6 +43,13 @@ Agents interact via five primary atomic actions:
 
 ## Task Suite
 
+| Level | Task Name | Key Objective & Action |
+| :--- | :--- | :--- |
+| **Level 1 (Easy)** | **`single_flag`** | **Direct Identification**: Find the one package in the manifest that is vulnerable. Judges should use the **`flag_vulnerable`** action. |
+| **Level 2 (Medium)** | **`transitive_trace`** | **Transitive Discovery**: The top packages are safe, but their "hidden" children are not. Judges must use **`trace_dependency`** to reveal the graph, then **`flag_vulnerable`** the child package. |
+| **Level 3 (Hard)** | **`minimal_upgrade`** | **Remediation Planning**: Identify the correct minimal version that fixes a bug. Judges must use the **`propose_upgrade`** action and provide a safe version number. |
+
+
 ### Task 1: Direct Risk Identification (single_flag)
 Automated identification of a single vulnerable package present in the direct manifest. Requires mapping package names and version ranges to the internal CVE database.
 
