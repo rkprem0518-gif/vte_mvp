@@ -131,6 +131,8 @@ class DepVulnTriageEnv:
 app = FastAPI(title="dep-vuln-triage", version="1.0.0")
 
 @app.get("/", response_class=HTMLResponse)
+@app.get("", response_class=HTMLResponse)
+@app.get("/app", response_class=HTMLResponse)
 async def dashboard():
     base_dir = os.path.dirname(__file__)
     html_path = os.path.join(base_dir, "data", "index.html")
