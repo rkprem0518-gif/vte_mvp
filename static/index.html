@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dep-vuln-triage | Dependency Vulnerability Triage</title>
+  <meta name="description" content="Interactive dashboard for the dep-vuln-triage OpenEnv environment. Triage dependency vulnerabilities, trace transitive risks, and propose remediation plans." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="logo">dep-vuln-<span>triage</span></div>
+  <div class="header-meta">
+    <span class="badge ok" id="health-badge">Checking...</span>
+    <span class="badge" id="env-badge">openenv-http/1.x</span>
+  </div>
+</header>
+
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <div class="section">
+      <div class="section-title">Environment</div>
+      <div class="form-row">
+        <label for="task-select">Task</label>
+        <select id="task-select">
+          <option value="single_flag">single_flag — Direct vulnerability (easy)</option>
+          <option value="transitive_trace">transitive_trace — Transitive graph (medium)</option>
+          <option value="minimal_upgrade">minimal_upgrade — Remediation planning (hard)</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-full" id="btn-reset" onclick="resetEnv()">Reset Environment</button>
+      <div id="error-banner" class="error-banner mt-12"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Submit Action</div>
+      <div class="form-row">
+        <label for="action-type">Action type</label>
+        <select id="action-type" onchange="onActionTypeChange()">
+          <option value="flag_vulnerable">flag_vulnerable</option>
+          <option value="trace_dependency">trace_dependency</option>
+          <option value="propose_upgrade">propose_upgrade</option>
+          <option value="mark_safe">mark_safe</option>
+          <option value="submit">submit</option>
+        </select>
+      </div>
+      <div class="form-row" id="row-package">
+        <label for="action-package">Package name</label>
+        <input type="text" id="action-package" placeholder="e.g. requests" />
+      </div>
+      <div class="form-row hidden" id="row-version">
+        <label for="action-version">Proposed version</label>
+        <input type="text" id="action-version" placeholder="e.g. 2.31.0" />
+      </div>
+      <div class="form-row">
+        <label for="action-cve">CVE ID <span class="text-muted">(optional)</span></label>
+        <input type="text" id="action-cve" placeholder="e.g. CVE-2023-32681" />
+      </div>
+      <div class="form-row">
+        <label for="action-reason">Reason <span class="text-muted">(optional)</span></label>
+        <textarea id="action-reason" placeholder="Describe the reasoning..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-full" id="btn-step" onclick="sendStep()" disabled>Send Action</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Last Step Result</div>
+      <div class="form-row">
+        <label>Reward</label>
+        <span class="reward-chip reward-low" id="reward-chip">—</span>
+      </div>
+      <div class="form-row">
+        <label>Grader Feedback</label>
+        <div class="feedback-box" id="feedback-box">Reset the environment to begin.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <details>
+        <summary>Documentation</summary>
+        <div class="docs-body">
+          <p class="text-sm text-muted mt-8">Three tasks of increasing difficulty. Each episode ends on <code>submit</code> or when max steps reached.</p>
+          <table class="docs-table mt-12">
+            <thead><tr><th>Action</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>flag_vulnerable</td><td>Mark a package as vulnerable. +0.35 if correct, -0.15 if false positive.</td></tr>
+              <tr><td>trace_dependency</td><td>Reveal transitive dependencies of a package.</td></tr>
+              <tr><td>propose_upgrade</td><td>Suggest a minimum safe version. +0.30 if valid.</td></tr>
+              <tr><td>mark_safe</td><td>Mark package as not vulnerable.</td></tr>
+              <tr><td>submit</td><td>End episode and collect completion bonus (up to +0.20).</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+
+    <!-- Episode done banner -->
+    <div class="episode-done-banner" id="episode-done-banner">
+      Episode complete. Reset to start another session.
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-label">Cumulative Score</div>
+        <div class="stat-value" id="stat-score">—</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Steps Taken</div>
+        <div class="stat-value" id="stat-steps">—</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Max Steps</div>
+        <div class="stat-value" id="stat-maxsteps">—</div>
+      </div>
+    </div>
+
+    <!-- Score progress -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Score Progress</span>
+        <span class="text-muted text-sm" id="score-label">No session</span>
+      </div>
+      <div class="card-body">
+        <div class="score-row">
+          <span class="score-number" id="score-display">0.00</span>
+          <div class="score-bar-track">
+            <div class="score-bar-fill low" id="score-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manifest table -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Dependency Manifest</span>
+        <span class="text-muted text-sm" id="manifest-task-label">—</span>
+      </div>
+      <div class="card-body" style="padding:0">
+        <table class="data-table" id="manifest-table">
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Version</th>
+              <th>Flagged</th>
+              <th>Correctly Flagged</th>
+            </tr>
+          </thead>
+          <tbody id="manifest-body">
+            <tr><td colspan="4" class="text-muted" style="padding:20px;text-align:center">Reset environment to populate manifest.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Dependency tree (for transitive tasks) -->
+    <div class="card" id="dep-tree-card">
+      <div class="card-header">
+        <span class="card-title">Dependency Graph</span>
+        <span class="text-muted text-sm">Transitive relationships</span>
+      </div>
+      <div class="card-body">
+        <div class="dep-tree" id="dep-tree-body">
+          <span class="text-muted">Reset to load graph.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- False positives -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Flagging Summary</span>
+      </div>
+      <div class="card-body">
+        <div class="flex-between">
+          <div>
+            <div class="stat-label">Correctly Flagged</div>
+            <div style="font-size:18px;font-weight:700;color:var(--green)" id="stat-correct">—</div>
+          </div>
+          <div>
+            <div class="stat-label">False Positives</div>
+            <div style="font-size:18px;font-weight:700;color:var(--red)" id="stat-fp">—</div>
+          </div>
+          <div>
+            <div class="stat-label">Total Flagged</div>
+            <div style="font-size:18px;font-weight:700;" id="stat-total-flagged">—</div>
+          </div>
+          <div>
+            <div class="stat-label">Proposed Upgrades</div>
+            <div style="font-size:18px;font-weight:700;" id="stat-upgrades">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

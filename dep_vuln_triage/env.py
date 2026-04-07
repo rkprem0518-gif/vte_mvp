@@ -130,28 +130,7 @@ class DepVulnTriageEnv:
 
 app = FastAPI(title="dep-vuln-triage", version="1.0.0")
 
-def _read_dashboard() -> str:
-    base_dir = os.path.dirname(__file__)
-    html_path = os.path.join(base_dir, "data", "index.html")
-    try:
-        with open(html_path, "r", encoding="utf-8") as f:
-            return f.read()
-    except Exception as e:
-        return f"<html><body><h1>Dashboard Missing</h1><pre>{str(e)}</pre></body></html>"
 
-@app.get("/", response_class=HTMLResponse)
-@app.get("/ui", response_class=HTMLResponse)
-async def dashboard():
-    return _read_dashboard()
-
-@app.exception_handler(404)
-async def not_found_handler(request: Request, exc: Exception):
-    # Only serve UI for browser requests (non-API paths)
-    path = request.url.path
-    api_paths = ["/reset", "/step", "/state", "/health", "/metadata", "/schema", "/mcp", "/openapi.json", "/docs", "/tasks", "/session"]
-    if not any(path.startswith(p) for p in api_paths):
-        return HTMLResponse(content=_read_dashboard(), status_code=200)
-    return Response(content='{"detail":"Not Found"}', status_code=404, media_type="application/json")
 
 app.add_middleware(
     CORSMiddleware,
