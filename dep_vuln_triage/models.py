@@ -33,8 +33,8 @@ class Action(BaseModel):
         "mark_safe",
         "submit"
     ]
-    package: str
-    reason: str
+    package: str = ""
+    reason: str = ""
     proposed_version: str | None = None
     cve_id: str | None = None
 

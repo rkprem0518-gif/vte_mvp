@@ -385,3 +385,29 @@ details .docs-body { padding: 0 16px 16px; background: var(--surface); }
 .mt-8 { margin-top: 8px; }
 .mt-12 { margin-top: 12px; }
 .flex-between { display: flex; align-items: center; justify-content: space-between; }
+
+/* ---------- Responsiveness ---------- */
+@media (max-width: 900px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow-y: visible;
+  }
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    max-height: none;
+    overflow-y: visible;
+  }
+  .main-content {
+    overflow-y: visible;
+    padding: 16px;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .flex-between {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}

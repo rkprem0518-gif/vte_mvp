@@ -147,18 +147,18 @@ async function sendStep() {
     }
 
     const data = await res.json();
-    const reward = data.reward?.value ?? 0;
-    const feedback = data.reward?.feedback ?? "";
+    const rewardVal = data.reward?.value ?? 0;
+    const feedbackText = data.reward?.feedback ?? "";
     const done = data.done ?? false;
     const obs = data.observation;
     const info = data.info ?? {};
 
-    cumulativeScore += reward;
-    stepsHistory.push(reward);
+    cumulativeScore += rewardVal;
+    stepsHistory.push(rewardVal);
     currentObs = obs;
 
     renderObservation(obs);
-    updateFeedback(reward, feedback);
+    updateFeedback(rewardVal, feedbackText);
     updateScoreUI(info, obs);
 
     if (done) {
