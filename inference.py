@@ -64,7 +64,7 @@ def run_task(task_name: str, start_time: float) -> dict:
     rewards      = []
     steps_taken  = 0
     done         = False
-    final_score  = 0.0
+    final_score  = 0.01
     success      = False
     error_str    = "null"
 
@@ -156,7 +156,7 @@ def run_task(task_name: str, start_time: float) -> dict:
         except:
             pass
         
-        final_score = min(1.0, max(0.0, sum(rewards) / max(len(rewards), 1)))
+        final_score = min(0.99, max(0.01, sum(rewards) / max(len(rewards), 1)))
         success     = final_score >= 0.7
         rewards_str = ",".join(f"{r:.2f}" for r in rewards)
         
@@ -175,8 +175,8 @@ def main():
         try:
             result = run_task(task, start_time)
         except Exception as e:
-            print(f"[END] success=false steps=0 score=0.00 rewards=", flush=True)
-            result = {"task": task, "score": 0.0, "success": False, "steps": 0}
+            print(f"[END] success=false steps=0 score=0.01 rewards=", flush=True)
+            result = {"task": task, "score": 0.01, "success": False, "steps": 0}
         results.append(result)
 
     print("\n=== SUMMARY ===", flush=True)

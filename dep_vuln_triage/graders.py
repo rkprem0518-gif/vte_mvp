@@ -120,6 +120,6 @@ def compute_step_reward(action: Action, state: dict, scenario: dict, cve_db: lis
         breakdown["completion_bonus"] = completion_bonus
         total += completion_bonus
 
-    value = max(0.0, min(1.0, total))
+    value = max(0.01, min(0.99, total))
     feedback = _build_feedback(breakdown, action)
     return Reward(value=value, breakdown=breakdown, feedback=feedback)
